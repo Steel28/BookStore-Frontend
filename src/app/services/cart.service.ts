@@ -30,12 +30,17 @@ export class CartService {
     if(alreadyExistsInCart){
       //increment the quantity
       existingCartItem.quantity++;
+      this.getCartItem(+theCartItem.id).unitsInStock --;
     }else {
       //add to cart item array
+      theCartItem.unitsInStock --;
       this.cartItems.push(theCartItem);
+      
+      
     }
 
     this.calculateTotalPrice();
+
   }
   
   calculateTotalPrice() {
@@ -60,6 +65,12 @@ export class CartService {
  	}
 
  	
+ }
+
+ getCartItem(index:number){
+
+    return this.cartItems.find((tempCartItem) => +tempCartItem.id === index)
+  
  }
 
  remove(cartItem:CartItem){

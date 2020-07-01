@@ -51,6 +51,7 @@ export class BookListComponent implements OnInit {
 
   listBooks(){
   this.searchMode= this._activatedRoute.snapshot.paramMap.has('keyword');
+  
 
   if(this.searchMode){
   	this.handleSearchBooks();
@@ -111,7 +112,7 @@ updatePageSize(pageSize: number){
 }
 
   addToCart(book: Book){
-    console.log(`book name: ${book.name}, and price: ${book.unitPrice}`);
+    
     const cartItem = new CartItem(book);
     this._cartService.addToCart(cartItem);
 }

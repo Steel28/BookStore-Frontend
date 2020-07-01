@@ -13,6 +13,7 @@ import  {CartItem} from '../../common/cart-item';
 })
 export class BookDetailsComponent implements OnInit {
 	book:Book = new Book();
+  cart:CartItem;
 
   constructor(private _activatedRoute: ActivatedRoute,
               private _bookService: BookService,
@@ -27,21 +28,45 @@ export class BookDetailsComponent implements OnInit {
   		   }
 
   		)
+
   }
 
   getBookInfo(){
     const id: number = +this._activatedRoute.snapshot.paramMap.get('id');
+   
+    
+     if(this._cartService.getCartItem(id) != undefined){
+      this.cart = this._cartService.getCartItem(id);
+      console.log(this.cart);
+      console.log(this.book)
 
-    this._bookService.get(id).subscribe(
+      this.book.id = this.cart.id
+      this.book.name = this.cart.name
+      this.book.imageUrl = this.cart.imageUrl
+      this.book.unitPrice = this.cart.unitPrice
+      this.book.unitsInStock = this.cart.unitsInStock
+    } else {
+
+      this._bookService.get(id).subscribe(
       data => {
         this.book = data;
       }
     );
+
+
+    } 
+
 }
   
 addToCart(){
+  const id: number = +this._activatedRoute.snapshot.paramMap.get('id');
 	const cartItem = new CartItem(this.book);
 	this._cartService.addToCart(cartItem);
+  this.cart = this._cartService.getCartItem(id);
+  
+  this.getBookInfo();
+  
+	 
 
 }
 }
